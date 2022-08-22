@@ -1,11 +1,9 @@
-package com.nasa.nasaimages.data.views.adapters
+package com.nasa.nasaimages.views.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.nasa.nasaimages.data.local.NasaImageEntity
-import com.nasa.nasaimages.data.models.NasaImagesResponseModelItem
 import com.nasa.nasaimages.databinding.ImagesRowItemBinding
 import com.nasa.nasaimages.utils.load
 

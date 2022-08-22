@@ -1,4 +1,4 @@
-package com.nasa.nasaimages.data.views.adapters
+package com.nasa.nasaimages.views.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -52,11 +52,11 @@ class ImagesDetailsListAdapter(
 
         InfoSheet().show(context) {
             title("${data.imageTitle}")
-            content("Date: ${data.date} \nMedia: ${data.mediaType} \n" +
+            content("Date: ${data.date} \nMedia: ${data.mediaType} \n Copyright: ${data.copyright} \n" +
                     " \n Explanation: ${data.imageExplanation}")
 
             onNegative("close") {
-                // Handle event
+                
             }
 
         }

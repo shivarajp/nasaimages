@@ -17,6 +17,8 @@ data class NasaImageEntity(
     @ColumnInfo(name = "explanation")
     var imageExplanation: String,
 
+    @ColumnInfo(name = "copyright")
+    var copyright: String,
 
     @ColumnInfo(name = "date")
     var date: String,

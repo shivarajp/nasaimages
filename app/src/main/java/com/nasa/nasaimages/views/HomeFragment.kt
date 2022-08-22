@@ -1,4 +1,4 @@
-package com.nasa.nasaimages.data.views
+package com.nasa.nasaimages.views
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,8 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.nasa.nasaimages.data.local.NasaImageEntity
-import com.nasa.nasaimages.data.views.adapters.ImagesDetailsListAdapter
-import com.nasa.nasaimages.data.views.adapters.ImagesListAdapter
+import com.nasa.nasaimages.views.adapters.ImagesListAdapter
 import com.nasa.nasaimages.databinding.HomeFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -57,15 +56,13 @@ class HomeFragment : Fragment() {
     }
 
     private fun loadData() {
+        viewModel.getImagesFromApi().observe(viewLifecycleOwner, Observer {
 
-        viewModel.getImagesFromLocalDb().observe(viewLifecycleOwner, Observer {
-
+            it?.let {
                 imagesList.addAll(it)
                 adapter.notifyDataSetChanged()
-
+            }
         })
-
-        viewModel.getImagesFromApi()
 
     }
 

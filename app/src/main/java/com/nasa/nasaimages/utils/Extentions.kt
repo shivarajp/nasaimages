@@ -45,7 +45,7 @@ fun NasaImagesResponseModel.toEntityList(): MutableList<NasaImageEntity> {
             NasaImageEntity(
                 imageTitle = it.title,
                 imageExplanation = it.explanation,
-                //copyright = it.copyright,
+                copyright = "${it.copyright ?: "No right"}",
                 date = it.date,
                 imgUrl = it.url,
                 imgHdUrl = it.hdurl,
