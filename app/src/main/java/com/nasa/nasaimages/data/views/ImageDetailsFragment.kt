@@ -8,32 +8,38 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.navigation.fragment.navArgs
+import com.maxkeppeler.sheets.info.InfoSheet
+import com.nasa.nasaimages.R
 import com.nasa.nasaimages.data.local.NasaImageEntity
 import com.nasa.nasaimages.data.views.adapters.ImagesDetailsListAdapter
 import com.nasa.nasaimages.data.views.adapters.ImagesListAdapter
-import com.nasa.nasaimages.databinding.HomeFragmentBinding
+import com.nasa.nasaimages.databinding.FragmentImageDetailsBinding
+import com.nasa.nasaimages.utils.toast
 import dagger.hilt.android.AndroidEntryPoint
+import java.text.FieldPosition
+
 
 @AndroidEntryPoint
-class HomeFragment : Fragment() {
+class ImageDetailsFragment : Fragment() {
 
-    private var _binding: HomeFragmentBinding? = null
+    private var _binding: FragmentImageDetailsBinding? = null
+    private val viewModel by viewModels<HomeViewModel>()
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
-
-    val viewModel by viewModels<HomeViewModel>()
-    lateinit var adapter: ImagesListAdapter
+    private var position = 0
     var imagesList = mutableListOf<NasaImageEntity>()
+    lateinit var adapter: ImagesDetailsListAdapter
+
+    private val args: ImageDetailsFragmentArgs by navArgs()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-        _binding = HomeFragmentBinding.inflate(inflater, container, false)
+        _binding = FragmentImageDetailsBinding.inflate(inflater, container, false)
         return binding.root
 
     }
@@ -41,33 +47,26 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        loadData()
-        adapter = ImagesListAdapter(imagesList)
+        position = args.position
 
-        binding.recyclerview.layoutManager = GridLayoutManager(requireActivity(), 2)
-        adapter = ImagesListAdapter(imagesList)
-        binding.recyclerview.adapter = adapter
-
-        adapter.itemClick = { data, position ->
-            val action = HomeFragmentDirections.actionFirstFragmentToSecondFragment()
-            action.position = position
-            findNavController().navigate(action)
-        }
-
-    }
-
-    private fun loadData() {
+        adapter = ImagesDetailsListAdapter(imagesList, requireActivity())
+        binding.viewpager.adapter = adapter
 
         viewModel.getImagesFromLocalDb().observe(viewLifecycleOwner, Observer {
 
-                imagesList.addAll(it)
-                adapter.notifyDataSetChanged()
+            imagesList.addAll(it)
+            adapter.notifyDataSetChanged()
+            binding.viewpager.currentItem = position
 
         })
 
-        viewModel.getImagesFromApi()
-
+        binding.backBtn.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
     }
+
+
+
 
     override fun onDestroyView() {
         super.onDestroyView()
